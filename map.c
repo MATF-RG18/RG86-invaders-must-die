@@ -2,8 +2,8 @@
 #include "map.h"
 #include "structures.h"
 
-int plx = 1;
-int ply = 1;
+int plx = 2;
+int ply = 2;
 int plz = 0;
 
 void initMapMatrix(void){
@@ -13,6 +13,10 @@ void initMapMatrix(void){
             map_matrix[i][j] = 0;
          }
     }
+    map_matrix[0][0] = NEXUS_ID;
+    map_matrix[1][0] = NEXUS_ID;
+    map_matrix[1][1] = NEXUS_ID;
+    map_matrix[0][1] = NEXUS_ID;
     map_matrix[plx][ply] = 1;
     for(i=0;i<MAP_SIZE;i++){
      for(j=0;j<MAP_SIZE;j++){
