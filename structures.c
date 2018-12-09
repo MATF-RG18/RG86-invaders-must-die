@@ -5,6 +5,27 @@
 
 int no_tower = 0;
 
+
+//f-ja za inicijalizaciju 
+void initStructures(){
+    
+    //niz kula
+    int j;
+    for(j=0;j<MAX_TOWERS;j++){
+        towers[j].x = -1;
+        towers[j].y = -1;
+        towers[j].healt = 100;
+        towers[j].demage = 20;
+    }
+    
+    //NEXUS
+    Nexus.x = 0;
+    Nexus.y = 0;
+    Nexus.healt = 500;
+    
+}
+
+
 void drawWall(int x1,int y1,int x2,int y2,int v){
     
     int height = 1;

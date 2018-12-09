@@ -5,19 +5,33 @@
 #define WEST -2
 
 //ID gradjevina
-#define TOWER_ID 3
+
 #define WALL_ID 2
+#define TOWER_ID 3
+#define NEXUS_ID 4
+
+//max broj objekata
+#define MAX_TOWERS 3
 
 
 //KULE
-struct Stower{
+struct STower{
     int x ;
     int y ;
+    int healt;
+    int demage;
 };
 
-#define MAX_TOWERS 3
+//Baza
+struct SNexus{
+    int x;
+    int y;
+    int healt;
+};
 
-static struct Stower towers[MAX_TOWERS];
+
+static struct SNexus Nexus;
+static struct STower towers[MAX_TOWERS];
 
 
 //f-je
@@ -25,3 +39,4 @@ void drawWall(int x1,int y1,int x2,int y2,int v);
 void structDrawTower(int x,int y);
 int getTowerX(int i);
 int getTowerY(int i);
+void initStructures();
