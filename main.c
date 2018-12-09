@@ -19,7 +19,9 @@ static int vpx = 1;
 static int vpy = 0.5;
 static int vpz = 1;
 static float rot = 5;
-static tower = 0;
+
+static int lockCamera = 0;
+
 
 void drawPlayer(int x, int y);
 
@@ -47,6 +49,7 @@ int main(int argc, char **argv)
     glLineWidth(2);
     initMapMatrix();
     
+    initStructures();
 
     /* Program ulazi u glavnu petlju. */
     glutMainLoop();
@@ -106,6 +109,12 @@ static void on_keyboard(unsigned char key, int x, int y)
         structDrawTower(getX(),getY()+1);
         on_display();
         break;
+    case 'c':
+        if(lockCamera == 1)
+            lockCamera =0;
+        else 
+            lockCamera = 1;
+        break;
     }
 }
 
@@ -138,24 +147,29 @@ static void on_display(void)
         
 	glMatrixMode(GL_MODELVIEW);
     	glLoadIdentity();
+        if (lockCamera == 1){
+            pz = getY()-4;
+            rot = getX();
+            px = getX() -1;
+        }
     	gluLookAt(
             px,py,pz,
             rot, 0,MAP_SIZE,
             0, 1, 0
         );
 
-    /*
-     * Kreira se kocka i primenjuje se geometrijska transformacija na
-     * istu.
-     */
-    glPushMatrix();
+
+    /*glPushMatrix();
 
     glColor3f(1, 0, 0);
     glTranslatef(.5, 1, 0);
     glScalef(1, 2, 1);
     glutSolidCube(1);
     
-    glPopMatrix();
+    glPopMatrix();*/
+    
+    drawNexus();
+    
     glBegin(GL_LINES);
         glColor3f(1,0,0);
         glVertex3f(0,0,0);
@@ -195,8 +209,8 @@ static void on_display(void)
     
 
     drawPlayer(getX(),getY());
-    drawWall(4,4,8,4,NORTH);
-    drawWall(6,6,9,6,NORTH);
+    //drawWall(4,4,8,4,NORTH);
+    //drawWall(6,6,9,6,NORTH);
     //structDrawTower(2,2);
     
     for(i=0;i<MAX_TOWERS;i++){
@@ -273,9 +287,15 @@ void drawTower(int x,int y){
     glColor3f(1,0,1);
     glTranslatef(x+0.5,1.5,y+0.5);
     glScalef(1,towerHeight,1);
-    glutWireCube(1);
+    glutSolidCube(1);
     glPopMatrix();   
 }
 
-
-
+void drawNexus(){
+    glPushMatrix();
+    glColor3f(0,1,1);
+    glTranslatef(1,0.5,1);
+    glScalef(2,1,2);
+    glutSolidCube(1);
+    glPopMatrix();
+}
