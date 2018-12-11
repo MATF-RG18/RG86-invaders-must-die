@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "map.h"
 #include "structures.h"
+#include "basic_draws.h"
 
 /* Dimenzije prozora */
 static int window_width, window_height;
@@ -140,7 +141,7 @@ static void on_display(void)
     gluPerspective(
             90,
             window_width/(float)window_height,
-            0.2, 25);
+            0.2, 50);
 
    
     /* Podesava se tacka pogleda. */
@@ -165,7 +166,6 @@ static void on_display(void)
     glTranslatef(.5, 1, 0);
     glScalef(1, 2, 1);
     glutSolidCube(1);
-    
     glPopMatrix();*/
     
     drawNexus();
@@ -185,6 +185,21 @@ static void on_display(void)
     glEnd();
     int i,j;
     
+    
+    glColor3f(0,1,1);
+        glBegin(GL_POLYGON);
+        glVertex3f(-25,-1,-25);
+        glVertex3f(-25,-1,25);
+        glVertex3f(100,-1,25);
+        glVertex3f(100,-1,-25);
+    glEnd();
+    glColor3f(0,1,1);
+    glBegin(GL_POLYGON);
+        glVertex3f(100,-1,20);
+        glVertex3f(-100,-1,20);
+        glVertex3f(-100,100,20);
+        glVertex3f(100,100,20);
+    glEnd();
     //mapa iscrtavanje
     
     glColor3f(0,1,0);
@@ -195,6 +210,7 @@ static void on_display(void)
         glVertex3f(MAP_SIZE,0,0);
     glEnd();
     
+    //Mreza polja
     glColor3f(0,0,0);
     for(i=0;i<=MAP_SIZE;i++){
         glBegin(GL_LINES);
@@ -207,12 +223,29 @@ static void on_display(void)
         glEnd();
     }
     
-
+    //iscrtavanje zemlje po obodu ostrva
+    glColor3f(0.4,0.1,0);
+    for(i=0;i<MAP_SIZE;i++){
+            
+        glPushMatrix();
+        glTranslatef(i+0.5,-0.55,0.5);
+        glutSolidCube(1);
+        glPopMatrix();
+        
+        glPushMatrix();
+        glTranslatef(0.5,-0.55,i+0.5);
+        glutSolidCube(1);
+        glPopMatrix();
+    }
+    
+    
+    
     drawPlayer(getX(),getY());
     //drawWall(4,4,8,4,NORTH);
     //drawWall(6,6,9,6,NORTH);
     //structDrawTower(2,2);
     
+    //Provera i iscrtavanje postojecih kula
     for(i=0;i<MAX_TOWERS;i++){
             if(getTowerX(i) == -1)
                 break;
@@ -221,81 +254,15 @@ static void on_display(void)
             }
     }
     
-  /*  int i,j;
-    for(i=0;i<MAP_SIZE;i++)
-        for(j=0;j<MAP_SIZE;j++)
-            if(map_*/
+    drawMenu(window_height,window_width);
+    
     /* Nova slika se salje na ekran. */
     glutSwapBuffers();
 }
 
 
-//F-ja za iscrtavanje igraca
-void drawPlayer(int x,int y){
-    
-    int px = getX();
-    int py = getY();
-    
-   
-    
-    glPushMatrix();
-    glColor3f(0, 1, 1);
-    glTranslatef(px+0.3, 0.2, py+0.5);
-    glScalef(1, 2, 1);
-    glutSolidCube(0.2);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glColor3f(1, 0, 1);
-    glTranslatef(px+0.7, 0.2, py+0.5);
-    glScalef(1, 2, 1);
-    glutSolidCube(0.2);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glColor3f(0, 0, 1);
-    glTranslatef(px+0.5, 0.6, py+0.5);
-    glScalef(3,2,3);
-    glutSolidCube(0.2);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glColor3f(0.5, 0.5, 1);
-    glTranslatef(px+0.5, 0.9, py+0.5);
-    glScalef(1,1,1);
-    glutSolidCube(0.2);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glColor3f(0.5, 0.5, 1);
-    glTranslatef(px+0.1, 0.60, py+0.5);
-    glScalef(1,1.5,1);
-    glutSolidCube(0.2);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glColor3f(0.5, 0.5, 1);
-    glTranslatef(px+0.9, 0.60, py+0.5);
-    glScalef(1,1.5,1);
-    glutSolidCube(0.2);
-    glPopMatrix();
-}
 
-void drawTower(int x,int y){
-    int towerHeight = 3;
-    glPushMatrix();
-    glColor3f(1,0,1);
-    glTranslatef(x+0.5,1.5,y+0.5);
-    glScalef(1,towerHeight,1);
-    glutSolidCube(1);
-    glPopMatrix();   
-}
 
-void drawNexus(){
-    glPushMatrix();
-    glColor3f(0,1,1);
-    glTranslatef(1,0.5,1);
-    glScalef(2,1,2);
-    glutSolidCube(1);
-    glPopMatrix();
-}
+
+
+
