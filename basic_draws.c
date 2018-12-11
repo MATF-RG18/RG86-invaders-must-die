@@ -55,6 +55,14 @@ void drawNexus(){
     glPopMatrix();
 }
 
+void drawWall(int x,int y){
+    glColor3f(0.7,0.3,0);
+    glPushMatrix();
+    glTranslatef(x+0.5,0.5,y+0.5);
+    glutSolidCube(1);
+    glPopMatrix();
+}
+
 //F-ja za iscrtavanje igraca
 void drawPlayer(int x,int y,int move){
 
@@ -107,7 +115,12 @@ void drawPlayer(int x,int y,int move){
     glTranslatef(0, 0.15, 0);
     glScalef(0.5,0.5,0.5);
     glutSolidCube(0.2);
-  
+    
+    //lice
+    glColor3f(1,1,1);
+    glTranslatef(0,0,0.1);
+    glutSolidSphere(0.1,20,20);
+    glTranslatef(0,0,-0.1);
     
     //leva ruka
     glColor3f(1, 1, 1);
@@ -117,14 +130,13 @@ void drawPlayer(int x,int y,int move){
 
     //desna ruka
     glColor3f(1, 1, 1);
-    glTranslatef(1, 0, 0);
+    glTranslatef(1,0,0);
     glScalef(1,1,1);
     glutSolidCube(0.2);
     
     
+    glColor3f(1,1,1);
+    
     glPopMatrix();
-
-
-
 }
 

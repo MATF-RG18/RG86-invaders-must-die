@@ -5,6 +5,8 @@
 #include "structures.h"
 #include "basic_draws.h"
 
+
+#define UNUSED(x) ((void)x)
 /* Dimenzije prozora */
 static int window_width, window_height;
 
@@ -16,9 +18,6 @@ static void on_display(void);
 static float px = 5;
 static float py = 5;
 static float pz = 0;
-static int vpx = 1;
-static int vpy = 0.5;
-static int vpz = 1;
 static float rot = 5;
 
 static int lockCamera = 0;
@@ -61,6 +60,8 @@ int main(int argc, char **argv)
 
 static void on_keyboard(unsigned char key, int x, int y)
 {
+    UNUSED(x);
+    UNUSED(y);
     switch (key) {
     case 27:
         /* Zavrsava se program. */
@@ -110,7 +111,11 @@ static void on_keyboard(unsigned char key, int x, int y)
         on_display();
         break;
     case 't':
-        structDrawTower(getX(),getY()+1);
+        structPutTower(getX(),getY()+1);
+        on_display();
+        break;
+    case 'z':
+        structPutWall(getX(),getY()+1);
         on_display();
         break;
     case 'c':
@@ -186,7 +191,7 @@ static void on_display(void)
         glVertex3f(0,0,0);
         glVertex3f(0,0,10);
     glEnd();
-    int i,j;
+    int i;
     
     
     glColor3f(0,1,1);
@@ -254,6 +259,13 @@ static void on_display(void)
                 break;
             else{
                 drawTower(getTowerX(i),getTowerY(i));
+            }
+    }
+    for(i=0;i<MAX_WALLS;i++){
+            if(getWallX(i) == -1)
+                break;
+            else{
+                drawWall(getWallX(i),getWallY(i));
             }
     }
     

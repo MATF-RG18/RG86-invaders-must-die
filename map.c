@@ -36,7 +36,7 @@ int getY(){
 }
 
 void putObject(int x,int y,int objectType,int v,int d){
-    if(NORTH == v){
+    if(0 == v){
      int i;
      for(i =x;i<x+d;i++){
          map_matrix[i][y] = objectType;
