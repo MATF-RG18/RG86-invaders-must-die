@@ -22,9 +22,8 @@ static int vpz = 1;
 static float rot = 5;
 
 static int lockCamera = 0;
+static int lastDirection = 0;
 
-
-void drawPlayer(int x, int y);
 
 
 int main(int argc, char **argv)
@@ -86,18 +85,22 @@ static void on_keyboard(unsigned char key, int x, int y)
 	break;*/
     case 'd':
         mapMovePlayer(-1,0);
+        lastDirection = MOVE_RIGHT;
         on_display();
         break;
     case 'a':
         mapMovePlayer(1,0);
+        lastDirection = MOVE_LEFT;
         on_display();
         break;
     case 'w':
         mapMovePlayer(0,1);
+        lastDirection = MOVE_FORWARD;
         on_display();
         break;
     case 's':
         mapMovePlayer(0,-1);
+        lastDirection = MOVE_BACKWARD;
         on_display();
         break;
     case 32:
@@ -240,7 +243,7 @@ static void on_display(void)
     
     
     
-    drawPlayer(getX(),getY());
+    drawPlayer(getX(),getY(),lastDirection);
     //drawWall(4,4,8,4,NORTH);
     //drawWall(6,6,9,6,NORTH);
     //structDrawTower(2,2);

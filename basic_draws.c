@@ -1,6 +1,8 @@
 #include <GL/glut.h>
 #include <stdio.h>
+#include "basic_draws.h"
 //IFNDEF ???
+
 
 //iscrtavanje menija
 void drawMenu(int window_height,int window_width){
@@ -54,52 +56,75 @@ void drawNexus(){
 }
 
 //F-ja za iscrtavanje igraca
-void drawPlayer(int x,int y){
-    
+void drawPlayer(int x,int y,int move){
+
     int px = x;
     int py = y;
     
     
     glPushMatrix();
+    //leva noga
+    
+    if(MOVE_LEFT == move){
+        glTranslatef(px,0,py+1);
+        glRotatef(90,0,1,0);
+    }
+    else if(MOVE_RIGHT == move){
+        glTranslatef(px+1,0,py);
+        glRotatef(270,0,1,0);
+    }
+    else if(MOVE_BACKWARD == move){
+        glTranslatef(px+1,0,py+1);
+        glRotatef(180,0,1,0);
+    }
+    else if(MOVE_FORWARD == move){
+        glTranslatef(px,0,py);
+    }
     glColor3f(0, 1, 1);
-    glTranslatef(px+0.3, 0.2, py+0.5);
+    glTranslatef(0.3, 0.2, 0.5);
+//    glTranslatef(px+0.3, 0.2, py+0.5);
     glScalef(1, 2, 1);
     glutSolidCube(0.2);
-    glPopMatrix();
+ 
     
-    glPushMatrix();
+    //desna noga
     glColor3f(1, 0, 1);
-    glTranslatef(px+0.7, 0.2, py+0.5);
-    glScalef(1, 2, 1);
+    glTranslatef(0.4, 0,0);
+    glScalef(1, 1, 1);
     glutSolidCube(0.2);
-    glPopMatrix();
+   
     
-    glPushMatrix();
+    //trup
     glColor3f(0, 0, 1);
-    glTranslatef(px+0.5, 0.6, py+0.5);
+    glTranslatef(-0.2, 0.2, 0);
+    glScalef(1,0.5,1);
     glScalef(3,2,3);
     glutSolidCube(0.2);
-    glPopMatrix();
+   
     
-    glPushMatrix();
-    glColor3f(0.5, 0.5, 1);
-    glTranslatef(px+0.5, 0.9, py+0.5);
+    //glava
+    glColor3f(0, 0, 0);
+    glTranslatef(0, 0.15, 0);
+    glScalef(0.5,0.5,0.5);
+    glutSolidCube(0.2);
+  
+    
+    //leva ruka
+    glColor3f(1, 1, 1);
+    glTranslatef(-0.25, -0.3,0);
+    glScalef(0.5,1,0.5);
+    glutSolidCube(0.2);
+
+    //desna ruka
+    glColor3f(1, 1, 1);
+    glTranslatef(1, 0, 0);
     glScalef(1,1,1);
     glutSolidCube(0.2);
-    glPopMatrix();
     
-    glPushMatrix();
-    glColor3f(0.5, 0.5, 1);
-    glTranslatef(px+0.1, 0.60, py+0.5);
-    glScalef(1,1.5,1);
-    glutSolidCube(0.2);
-    glPopMatrix();
     
-    glPushMatrix();
-    glColor3f(0.5, 0.5, 1);
-    glTranslatef(px+0.9, 0.60, py+0.5);
-    glScalef(1,1.5,1);
-    glutSolidCube(0.2);
     glPopMatrix();
+
+
+
 }
 
