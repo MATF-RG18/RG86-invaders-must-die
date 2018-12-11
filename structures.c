@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <GL/glut.h>
 
+//inicijalno stanje objekata
 int no_tower = 0;
 int no_walls = 0;
 
@@ -34,6 +35,7 @@ void initStructures(){
 }
 
 
+//F-je za rad sa zidovima
 void structPutWall(int x,int y){
     
     if(!checkField(x,y))
@@ -42,7 +44,7 @@ void structPutWall(int x,int y){
         return;
     walls[no_walls].x = x;
     walls[no_walls].y = y;
-    putObject(x,y,WALL_ID,-1,1);
+    putObject(x,y,WALL_ID);
     no_walls++;
 }
 
@@ -64,7 +66,7 @@ void structPutTower(int x,int y){
         return;
     towers[no_tower].x = x;
     towers[no_tower].y = y;
-    putObject(x,y,TOWER_ID,-1,1);
+    putObject(x,y,TOWER_ID);
     no_tower++;
 }
 

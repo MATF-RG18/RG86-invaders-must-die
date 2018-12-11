@@ -111,11 +111,11 @@ static void on_keyboard(unsigned char key, int x, int y)
         on_display();
         break;
     case 't':
-        structPutTower(getX(),getY()+1);
+        structPutTower(objectX(),objectY());
         on_display();
         break;
     case 'z':
-        structPutWall(getX(),getY()+1);
+        structPutWall(objectX(),objectY());
         on_display();
         break;
     case 'c':
@@ -275,7 +275,30 @@ static void on_display(void)
     glutSwapBuffers();
 }
 
-
+int objectX(){
+    switch (lastDirection){
+        case 0:
+            return getX();
+        case 1:
+            return getX()+1;
+        case 2:
+            return getX();
+        case 3:
+            return getX() -1;
+    }
+}
+int objectY(){
+    switch (lastDirection){
+        case 0:
+            return getY()+1;
+        case 1:
+            return getY();
+        case 2:
+            return getY()-1;
+        case 3:
+            return getY();
+    }
+}
 
 
 

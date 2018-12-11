@@ -35,16 +35,8 @@ int getY(){
     return ply;
 }
 
-void putObject(int x,int y,int objectType,int v,int d){
-    if(0 == v){
-     int i;
-     for(i =x;i<x+d;i++){
-         map_matrix[i][y] = objectType;
-     }
-    }
-    if(v == -1){
-        map_matrix[x][y] = objectType;
-    }
+void putObject(int x,int y,int objectType){
+    map_matrix[x][y] = objectType;
     
 }
 
