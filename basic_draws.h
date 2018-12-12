@@ -6,8 +6,14 @@
 
 
 
+
 void drawMenu(int window_height,int window_width);
 void drawTower(int x,int y);
 void drawNexus();
 void drawPlayer(int x,int y,int move);
 void drawWall(int x,int y);
+void print(int x, int y, char *string);
+void cubebase();
+void cubeWithTexture();
+void initTextures();
+void drawMap();

@@ -11,6 +11,8 @@ int no_walls = 0;
 //f-ja za inicijalizaciju 
 void initStructures(){
     
+	no_tower = 0;
+	no_walls = 0;
     //niz kula
     int j;
     for(j=0;j<MAX_TOWERS;j++){
@@ -27,11 +29,11 @@ void initStructures(){
     
     //WALLS
     for(j=0;j<MAX_WALLS;j++){
-        towers[j].x = -1;
-        towers[j].y = -1;
-        towers[j].healt = 150;
+        walls[j].x = -1;
+        walls[j].y = -1;
+        walls[j].healt = 150;
     }
-    
+
 }
 
 

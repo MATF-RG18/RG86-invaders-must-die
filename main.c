@@ -4,9 +4,11 @@
 #include "map.h"
 #include "structures.h"
 #include "basic_draws.h"
-
+#include "image.h"
 
 #define UNUSED(x) ((void)x)
+
+
 /* Dimenzije prozora */
 static int window_width, window_height;
 
@@ -43,12 +45,13 @@ int main(int argc, char **argv)
     //glutPostRedisplay(on_display);
 
     /* Obavlja se OpenGL inicijalizacija. */
-    glClearColor(0.75, 0.75, 0.75, 0);
+    glClearColor(0, 1,1, 0);
     glEnable(GL_DEPTH_TEST);
     glLineWidth(2);
     initMapMatrix();
     
     initStructures();
+    initTextures();
 
     /* Program ulazi u glavnu petlju. */
     glutMainLoop();
@@ -124,6 +127,10 @@ static void on_keyboard(unsigned char key, int x, int y)
         else 
             lockCamera = 1;
         break;
+	case 'r':
+		initStructures();
+		initMapMatrix();
+		break;
     }
 }
 
@@ -168,90 +175,13 @@ static void on_display(void)
         );
 
 
-    /*glPushMatrix();
 
-    glColor3f(1, 0, 0);
-    glTranslatef(.5, 1, 0);
-    glScalef(1, 2, 1);
-    glutSolidCube(1);
-    glPopMatrix();*/
-    
-    drawNexus();
-    
-    glBegin(GL_LINES);
-        glColor3f(1,0,0);
-        glVertex3f(0,0,0);
-        glVertex3f(10,0,0);
-        
-        glColor3f(0,1,0);
-        glVertex3f(0,0,0);
-        glVertex3f(0,10,0);
-        
-        glColor3f(0,0,1);
-        glVertex3f(0,0,0);
-        glVertex3f(0,0,10);
-    glEnd();
     int i;
-    
-    
-    glColor3f(0,1,1);
-        glBegin(GL_POLYGON);
-        glVertex3f(-25,-1,-25);
-        glVertex3f(-25,-1,25);
-        glVertex3f(100,-1,25);
-        glVertex3f(100,-1,-25);
-    glEnd();
-    glColor3f(0,1,1);
-    glBegin(GL_POLYGON);
-        glVertex3f(100,-1,20);
-        glVertex3f(-100,-1,20);
-        glVertex3f(-100,100,20);
-        glVertex3f(100,100,20);
-    glEnd();
-    //mapa iscrtavanje
-    
-    glColor3f(0,1,0);
-    glBegin(GL_POLYGON);
-        glVertex3f(0,0,0);
-        glVertex3f(0,0,MAP_SIZE);
-        glVertex3f(MAP_SIZE,0,MAP_SIZE);
-        glVertex3f(MAP_SIZE,0,0);
-    glEnd();
-    
-    //Mreza polja
-    glColor3f(0,0,0);
-    for(i=0;i<=MAP_SIZE;i++){
-        glBegin(GL_LINES);
-            glVertex3f(i,0,0);
-            glVertex3f(i,0,MAP_SIZE);
-        glEnd();
-        glBegin(GL_LINES);
-            glVertex3f(0,0,i);
-            glVertex3f(MAP_SIZE,0,i);
-        glEnd();
-    }
-    
-    //iscrtavanje zemlje po obodu ostrva
-    glColor3f(0.4,0.1,0);
-    for(i=0;i<MAP_SIZE;i++){
-            
-        glPushMatrix();
-        glTranslatef(i+0.5,-0.55,0.5);
-        glutSolidCube(1);
-        glPopMatrix();
-        
-        glPushMatrix();
-        glTranslatef(0.5,-0.55,i+0.5);
-        glutSolidCube(1);
-        glPopMatrix();
-    }
-    
-    
-    
+
+	/*Iscrtavanje mape i njenih objekata*/
+	drawMap();	
+    drawNexus();
     drawPlayer(getX(),getY(),lastDirection);
-    //drawWall(4,4,8,4,NORTH);
-    //drawWall(6,6,9,6,NORTH);
-    //structDrawTower(2,2);
     
     //Provera i iscrtavanje postojecih kula
     for(i=0;i<MAX_TOWERS;i++){
@@ -261,19 +191,24 @@ static void on_display(void)
                 drawTower(getTowerX(i),getTowerY(i));
             }
     }
+	
     for(i=0;i<MAX_WALLS;i++){
-            if(getWallX(i) == -1)
-                break;
+            if(getWallX(i) == -1){
+                break;}
             else{
                 drawWall(getWallX(i),getWallY(i));
             }
     }
     
     drawMenu(window_height,window_width);
+    print(20,20,"ISa");
+    
     
     /* Nova slika se salje na ekran. */
     glutSwapBuffers();
+    
 }
+    
 
 int objectX(){
     switch (lastDirection){
@@ -299,6 +234,7 @@ int objectY(){
             return getY();
     }
 }
+
 
 
 
