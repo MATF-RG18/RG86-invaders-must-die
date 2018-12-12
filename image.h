@@ -10,6 +10,8 @@ typedef struct {
   unsigned int offsetbits;
 } BITMAPFILEHEADER;
 
+
+
 typedef struct {
   unsigned int size;
   unsigned int width;

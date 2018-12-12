@@ -7,6 +7,8 @@ Image *image_init(int width, int height) {
 
   Image *image;
 
+
+
   /* U slucaju greske prekida se program. */
   assert(width >= 0 && height >= 0);
 
