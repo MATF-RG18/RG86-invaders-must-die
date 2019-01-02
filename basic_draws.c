@@ -4,6 +4,9 @@
 #include <string.h>
 #include <image.h>
 #include <map.h>
+#include <stdlib.h>
+#include <structures.h>
+#include "invaders.h"
 //IFNDEF ???
 
 
@@ -13,14 +16,20 @@
 #define WALLCOVERFILE "textures/wall.bmp"
 #define TOWERCOVERFILE "textures/tower.bmp"
 #define CANNONCOVERFILE "textures/cannon.bmp"
+#define CANNONCOVERFILE2 "textures/cannon_top.bmp"
+#define POSTCOVERFILE "textures/post.bmp"
+#define POSTCOVERFILE2 "textures/post_top.bmp"
 
 //Oznake za konkretne strukture u nizu
-#define NO_TEXTURES 5
+#define NO_TEXTURES 8
 #define MAPTEXTURE 0
 #define NEXUSTEXTURE 1
 #define WALLTEXTURE 2
 #define TOWERTEXTURE 3
 #define CANNONTEXTURE 4
+#define CANNONTEXTURE2 5
+#define POSTTEXTURE 6
+#define POSTTEXTURE2 7
 
 static GLuint textures[NO_TEXTURES];
 
@@ -96,25 +105,40 @@ void drawMenu(int window_height,int window_width){
     
     //crtanje 2D menija
     
-    float menu_width = window_height/3.0;
-    float menu_height = window_width;
-    print(100,100,"TExtTExtTExtTExtTExtTExtTExt");
-    print(20,20,"mali text");
-    
+    float menu_width = window_width;
+    float menu_height = window_height/4.0;
+
+ 
+	char buffer[50];
+	sprintf(buffer,"Broj preostalih kula: %d",no_structures(TOWER_ID));
+	print(menu_width/2,50,buffer);
+	sprintf(buffer,"Broj preostalih zidova: %d",no_structures(WALL_ID));
+	print(menu_width/2,70,buffer);	
+	sprintf(buffer,"Broj preostalih postova: %d",no_structures(POST_ID));
+	print(menu_width/2,90,buffer);
+
+	print(menu_width,40,"Da postavite kulu - 't'");
+	print(menu_width,75,"Da postavite zid - 'z'");
+	print(menu_width,110,"Da postavite post - 'p'");
+	//print(menu_width-250,170,"Napomena: objekat se postavlja");
+	//print(menu_width-250,205,"postavlja u na polje ispred igraca");	
+    //print(menu_width-250,240,"igraca. ");
     glBegin(GL_LINES);
+    	glLineWidth(4);
         glColor3f(0,0,0);
-        glVertex2f(0,0);
-        glVertex2f(menu_height,menu_width);
-        glVertex2f(menu_height,0);
+		glVertex2f(menu_width/2,0);
+		glVertex2f(menu_width/2,menu_height);
     glEnd();
     
     glBegin(GL_QUADS);
-        glColor3f(1,1,1);
+        glColor3f(0.8,0.7,0.1);
         glVertex2f(0.0, 0.0);
         glVertex2f(window_width, 0.0);
-        glVertex2f(window_width, window_height/3.0);
-        glVertex2f(0.0, window_height/3.0);
+        glVertex2f(window_width, window_height/4.0);
+        glVertex2f(0.0, window_height/4.0);
     glEnd();
+    
+    
     
 
     
@@ -136,7 +160,7 @@ void drawTower(int x,int y){
     glColor3f(1,0,1);
     glTranslatef(x+0.5,1,y);
     glScalef(1,towerHeight,1);
-    cubeWithTexture();
+    cubeWithTexture(0);
 	glPopMatrix();
 	
 	glBindTexture(GL_TEXTURE_2D,0);
@@ -146,7 +170,7 @@ void drawTower(int x,int y){
 
 	glTranslatef(x+0.5,towerHeight+0.25,y+0.25);
 	glScalef(0.5,0.5,0.5);
-	cubeWithTexture();
+	cubeWithTexture(CANNONTEXTURE2);
     glPopMatrix();   
 	glBindTexture(GL_TEXTURE_2D,0);
 }
@@ -156,25 +180,40 @@ void drawNexus(){
 	glBindTexture(GL_TEXTURE_2D,textures[NEXUSTEXTURE]);
 	glPushMatrix();
 	glTranslatef(1,0.5,0);
-	glScalef(2,1,2);
-	cubeWithTexture();
+	cubeWithTexture(0);
 	glPopMatrix();
 	glBindTexture(GL_TEXTURE_2D,0);
 }
 
 //iscrtavanje zida
 void drawWall(int x,int y){
-	glBindTexture(GL_TEXTURE_2D,textures[WALLTEXTURE]);
+    glBindTexture(GL_TEXTURE_2D,textures[WALLTEXTURE]);
     glPushMatrix();
 	
     glTranslatef(x+0.5,0.5,y);
-    cubeWithTexture();
+    cubeWithTexture(0);
 	
     glPopMatrix();
 	
 	glBindTexture(GL_TEXTURE_2D,0);
 }
 
+
+
+//Iscrtavanje "Cuvarskog posta"
+
+void drawPost(int x,int y){
+    glBindTexture(GL_TEXTURE_2D,textures[POSTTEXTURE]);
+    glPushMatrix();
+	
+    glTranslatef(x+0.5,0.5,y);
+    cubeWithTexture(POSTTEXTURE2);
+	
+    glPopMatrix();
+	
+	glBindTexture(GL_TEXTURE_2D,0);
+
+}
 
 
 
@@ -195,30 +234,24 @@ void cubebase(){
 	glEnd();
 }
 
-void cubeWithTexture(){
+void cubeWithTexture(int diff_top){
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	
-	
 	//iscrtavanje osnove kocke
 	cubebase();
-	
+
+
 	//iscrtavanje bocnih stranica
 	glPushMatrix();
 	glTranslated(0.5,0.0,0.5);
 	glRotated(90.0,0.0,1.0,0.0);
 	cubebase();
 	glPopMatrix();
-
+		
 	glPushMatrix();
 	glTranslated(-0.5,0.0,0.5);
 	glRotated(-90.0,0.0,1.0,0.0);
-	cubebase();
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslated(0.0,0.5,0.5);
-	glRotated(-90.0,1.0,0.0,0.0);
 	cubebase();
 	glPopMatrix();
 	
@@ -228,8 +261,6 @@ void cubeWithTexture(){
 	cubebase();
 	glPopMatrix();
 
-	//gornja stranica 
-	
 	glBegin(GL_POLYGON);
 		glTexCoord2f(0.0,0.0);
 		glVertex3d(-0.5,-0.5,1.0);
@@ -245,8 +276,62 @@ void cubeWithTexture(){
 	glEnd();
 	glPopMatrix();
 	
+	//u slucaju da gornja stranica nema istu teksturu 
+	if(diff_top != 0){
+		glBindTexture(GL_TEXTURE_2D,0);
+		glBindTexture(GL_TEXTURE_2D,textures[diff_top]);
+	}		
+
+	//gornja
+	glPushMatrix();
+	glTranslated(0.0,0.5,0.5);
+	glRotated(-90.0,1.0,0.0,0.0);
+	cubebase();
+	glPopMatrix();
+	
+	
 	glFlush();
 }
+
+/*Iscrtavanje invadersa*/
+
+//Trouper
+
+void drawTrouper(int x,int y){
+    
+	
+	
+    glPushMatrix();
+	glColor3f(0,0,0);
+    glTranslatef(x+0.5,0.25,y+0.5);
+    glutSolidCube(0.5);
+    glPopMatrix();
+	
+	glPushMatrix();
+	glColor3f(0,0,0);
+	glTranslatef(x+0.5,0.75,y+0.5);
+	glutSolidCube(0.25);
+	glPopMatrix();
+    
+}
+
+//Eagle
+
+void drawEagle(int x,int y){
+	glPushMatrix();
+	glColor3f(1,0,0);
+	glTranslatef(x+0.5,1.5,y+0.5);
+	//glRotatef(45,1,0,0);
+	glutSolidCube(0.5);		
+	glPopMatrix();
+
+}
+
+
+
+
+
+
 
 //F-ja za iscrtavanje igraca
 void drawPlayer(int x,int y,int move){
@@ -329,16 +414,23 @@ void drawPlayer(int x,int y,int move){
 //F-ja za ispisivanje teksta 
 void print(int x, int y, char *string)
 {
-    
-glColor3f(1,0,0);
-glRasterPos2f(x,y);
+
+
 
 int len = (int) strlen(string);
+int l =0; 
+int i;
+for(i=0;i<len;i++)
+	l +=glutBitmapWidth(GLUT_BITMAP_TIMES_ROMAN_24,string[i]);
+	
+glColor3f(0,0,0);
+glRasterPos2f(x,y);
 
-for (int i = 0; i < len; i++)
+for (i = 0; i < len; i++)
 {
     glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,string[i]);
 }
+//printf("%d \n",l);
 }
 
 //F-ja za inicijalizovanje tekstura programa
@@ -354,6 +446,7 @@ void initTextures(){
     
     cover = image_init(0, 0);
     
+	//ucitavanje MAP TEXTURE
     image_read(cover, MAPCOVERFILE);
     glGenTextures(NO_TEXTURES, textures);
     glBindTexture(GL_TEXTURE_2D, textures[MAPTEXTURE]);
@@ -369,7 +462,8 @@ void initTextures(){
                  cover->width, cover->height, 0,
                  GL_RGB, GL_UNSIGNED_BYTE, cover->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
-    
+	
+	//ucitavanje NEXUS TEXTURE    
     image_read(cover, NEXUSCOVERFILE);
     glBindTexture(GL_TEXTURE_2D, textures[NEXUSTEXTURE]);
     glTexParameteri(GL_TEXTURE_2D,
@@ -435,6 +529,63 @@ void initTextures(){
                  cover->width, cover->height, 0,
                  GL_RGB, GL_UNSIGNED_BYTE, cover->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+
+			
+	//UCITAVANJE TOWER CANNON TEXTURE TOP SIDE	
+	image_read(cover, CANNONCOVERFILE2);
+    glBindTexture(GL_TEXTURE_2D, textures[CANNONTEXTURE2]);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+                 cover->width, cover->height, 0,
+                 GL_RGB, GL_UNSIGNED_BYTE, cover->pixels);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+
+
+
+
+	//Tekstura "Cuvarskog posta"
+	image_read(cover, POSTCOVERFILE);
+    glBindTexture(GL_TEXTURE_2D, textures[POSTTEXTURE]);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+                 cover->width, cover->height, 0,
+                 GL_RGB, GL_UNSIGNED_BYTE, cover->pixels);
+    glBindTexture(GL_TEXTURE_2D, 0);
+	
+	
+	//Tekstura "Cuvarskog posta"
+	image_read(cover, POSTCOVERFILE2);
+    glBindTexture(GL_TEXTURE_2D, textures[POSTTEXTURE2]);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+                 cover->width, cover->height, 0,
+                 GL_RGB, GL_UNSIGNED_BYTE, cover->pixels);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+	
 
     image_done(cover);
 }

@@ -1,5 +1,4 @@
 #define MAP_SIZE 10
-static int map_matrix [MAP_SIZE][MAP_SIZE];
 
 void initMapMatrix(void);
 
