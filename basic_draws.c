@@ -19,9 +19,10 @@
 #define CANNONCOVERFILE2 "textures/cannon_top.bmp"
 #define POSTCOVERFILE "textures/post.bmp"
 #define POSTCOVERFILE2 "textures/post_top.bmp"
+#define TANKTEXTUREFILE1 "textures/tank.bmp"
 
 //Oznake za konkretne strukture u nizu
-#define NO_TEXTURES 8
+#define NO_TEXTURES 9
 #define MAPTEXTURE 0
 #define NEXUSTEXTURE 1
 #define WALLTEXTURE 2
@@ -30,7 +31,7 @@
 #define CANNONTEXTURE2 5
 #define POSTTEXTURE 6
 #define POSTTEXTURE2 7
-
+#define TANKTEXTURE1 8
 static GLuint textures[NO_TEXTURES];
 
 //F-ja za iscrtavanje mape
@@ -45,13 +46,13 @@ void drawMap(){
         glVertex3f(0, 0, 0);
 
         glTexCoord2f(1, 0);
-        glVertex3f(10, 0, 0);
+        glVertex3f(MAP_SIZE-1, 0, 0);
 
         glTexCoord2f(1, 1);
-        glVertex3f(10, 0,10);
+        glVertex3f(MAP_SIZE-1, 0,MAP_SIZE-1);
 
         glTexCoord2f(0, 1);
-        glVertex3f(0, 0, 10);
+        glVertex3f(0, 0, MAP_SIZE-1);
     
     glEnd();
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -59,20 +60,20 @@ void drawMap(){
 	//Mreza polja
 	int i;
     glColor3f(0,0,0);
-    for(i=0;i<=MAP_SIZE;i++){
+    for(i=0;i<=MAP_SIZE-1;i++){
         glBegin(GL_LINES);
             glVertex3f(i,0,0);
-            glVertex3f(i,0,MAP_SIZE);
+            glVertex3f(i,0,MAP_SIZE-1);
         glEnd();
         glBegin(GL_LINES);
             glVertex3f(0,0,i);
-            glVertex3f(MAP_SIZE,0,i);
+            glVertex3f(MAP_SIZE-1,0,i);
         glEnd();
     }
     
     //iscrtavanje zemlje po obodu ostrva
     glColor3f(0.4,0.1,0);
-    for(i=0;i<MAP_SIZE;i++){
+    for(i=0;i<MAP_SIZE-1;i++){
             
         glPushMatrix();
         glTranslatef(i+0.5,-0.55,0.5);
@@ -91,13 +92,16 @@ void drawMap(){
 
 
 //iscrtavanje menija
-void drawMenu(int window_height,int window_width){
+void drawMenu(){
     
+	int width = 600;
+	int height = 600;
+
     //Menjanje matrica 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    gluOrtho2D(0,window_width,window_height,0);
+    gluOrtho2D(0,width,height,0);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
@@ -105,37 +109,40 @@ void drawMenu(int window_height,int window_width){
     
     //crtanje 2D menija
     
-    float menu_width = window_width;
-    float menu_height = window_height/4.0;
+    float menu_width = width;
+    float menu_height = height/4.0;
 
  
 	char buffer[50];
 	sprintf(buffer,"Broj preostalih kula: %d",no_structures(TOWER_ID));
-	print(menu_width/2,50,buffer);
+	print(menu_width/2+50,30,buffer);
 	sprintf(buffer,"Broj preostalih zidova: %d",no_structures(WALL_ID));
-	print(menu_width/2,70,buffer);	
+	print(menu_width/2+50,50,buffer);	
 	sprintf(buffer,"Broj preostalih postova: %d",no_structures(POST_ID));
-	print(menu_width/2,90,buffer);
+	print(menu_width/2+50,70,buffer);
 
-	print(menu_width,40,"Da postavite kulu - 't'");
-	print(menu_width,75,"Da postavite zid - 'z'");
-	print(menu_width,110,"Da postavite post - 'p'");
+	print(10,30,"Da postavite kulu - 't'");
+	print(10,50,"Da postavite zid - 'z'");
+	print(10,70,"Da postavite post - 'p'");
+	print(10,90,"Zakljucavanje kamere - 'c'");
+	print(10,110,"Da pozicionirate kameru na sebe - 'SPACE'");
+	print(10,130,"Za pocetak napada - 'f'");
 	//print(menu_width-250,170,"Napomena: objekat se postavlja");
 	//print(menu_width-250,205,"postavlja u na polje ispred igraca");	
     //print(menu_width-250,240,"igraca. ");
-    glBegin(GL_LINES);
+    /*glBegin(GL_LINES);
     	glLineWidth(4);
         glColor3f(0,0,0);
 		glVertex2f(menu_width/2,0);
 		glVertex2f(menu_width/2,menu_height);
     glEnd();
-    
+    */
     glBegin(GL_QUADS);
         glColor3f(0.8,0.7,0.1);
         glVertex2f(0.0, 0.0);
-        glVertex2f(window_width, 0.0);
-        glVertex2f(window_width, window_height/4.0);
-        glVertex2f(0.0, window_height/4.0);
+        glVertex2f(width, 0.0);
+        glVertex2f(width, menu_height);
+        glVertex2f(0.0, height/4.0);
     glEnd();
     
     
@@ -180,6 +187,7 @@ void drawNexus(){
 	glBindTexture(GL_TEXTURE_2D,textures[NEXUSTEXTURE]);
 	glPushMatrix();
 	glTranslatef(1,0.5,0);
+	glScalef(2,1,2);
 	cubeWithTexture(0);
 	glPopMatrix();
 	glBindTexture(GL_TEXTURE_2D,0);
@@ -300,19 +308,22 @@ void cubeWithTexture(int diff_top){
 void drawTrouper(int x,int y){
     
 	
-	
+    glBindTexture(GL_TEXTURE_2D,textures[TANKTEXTURE1]);	
     glPushMatrix();
 	glColor3f(0,0,0);
-    glTranslatef(x+0.5,0.25,y+0.5);
-    glutSolidCube(0.5);
+    glTranslatef(x+0.35,0.5,y);
+    glScalef(0.5,0.5,0.5);
+    cubeWithTexture(0);
     glPopMatrix();
 	
 	glPushMatrix();
 	glColor3f(0,0,0);
-	glTranslatef(x+0.5,0.75,y+0.5);
-	glutSolidCube(0.25);
+        glTranslatef(x+0.5,0.75,y+0.5);
+        glScalef(0.25,0.25,0.25);
+        cubeWithTexture(0);
 	glPopMatrix();
-    
+    glBindTexture(GL_TEXTURE_2D,0);
+        
 }
 
 //Eagle
@@ -328,6 +339,15 @@ void drawEagle(int x,int y){
 }
 
 
+void drawCabbine(){
+
+	glPushMatrix();
+	glTranslatef(0.5,3,0.5);
+	glutWireCube(1);
+	glPopMatrix();
+
+
+}
 
 
 
@@ -421,14 +441,14 @@ int len = (int) strlen(string);
 int l =0; 
 int i;
 for(i=0;i<len;i++)
-	l +=glutBitmapWidth(GLUT_BITMAP_TIMES_ROMAN_24,string[i]);
+	l +=glutBitmapWidth(GLUT_BITMAP_9_BY_15,string[i]);
 	
 glColor3f(0,0,0);
 glRasterPos2f(x,y);
 
 for (i = 0; i < len; i++)
 {
-    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,string[i]);
+    glutBitmapCharacter(GLUT_BITMAP_9_BY_15,string[i]);
 }
 //printf("%d \n",l);
 }
@@ -585,12 +605,27 @@ void initTextures(){
                  GL_RGB, GL_UNSIGNED_BYTE, cover->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
 
+    	//Tekstura "Cuvarskog posta"
+	image_read(cover, TANKTEXTUREFILE1);
+    glBindTexture(GL_TEXTURE_2D, textures[TANKTEXTURE1]);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+                 cover->width, cover->height, 0,
+                 GL_RGB, GL_UNSIGNED_BYTE, cover->pixels);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    
+    
 	
 
     image_done(cover);
 }
-
-
 
 
 

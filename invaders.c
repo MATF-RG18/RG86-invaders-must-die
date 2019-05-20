@@ -50,21 +50,20 @@ void riseTrouper(){
 		return;
 	srand(time(NULL));
 	int r = rand()%2;
-	int s = rand()%10;	
-	//printf("s: %d\n r:%d\n",s,r); 
-	while(!(checkField(s,9)==1 && checkField(9,s)==1)){
-		s = rand()%10;
+	int s = rand()%MAP_SIZE;	
+	while(!(checkFieldI(s,MAP_SIZE-1)==1 && checkFieldI(MAP_SIZE-1,s)==1)){
+		s = rand()%MAP_SIZE;
 	}	
 	
 	if(r == 1){
-		troupers[no_troupers].x = 9;
+		troupers[no_troupers].x = MAP_SIZE-1;
 		troupers[no_troupers].y = s;	
-		putObject(9,s,TROUPER_ID);		
+		putObject(MAP_SIZE-1,s,TROUPER_ID);		
 	}
 	else{
 		troupers[no_troupers].x = s;
-		troupers[no_troupers].y = 9;
-		putObject(s,9,TROUPER_ID);				
+		troupers[no_troupers].y = MAP_SIZE-1;
+		putObject(s,MAP_SIZE-1,TROUPER_ID);				
 	}
 	troupers[no_troupers].live = 1;
 	no_troupers++;
@@ -76,21 +75,21 @@ void riseEagle(){
 		return;
 	srand(time(NULL));
 	int r = (rand()*5)%2;
-	int s = rand()%10;	
-	while(!(checkField(s,9)==1 && checkField(9,s)==1)){
-		s = rand()%10;
+	int s = rand()%MAP_SIZE;	
+	while(!(checkFieldI(s,MAP_SIZE-1)==1 && checkFieldI(MAP_SIZE-1,s)==1)){
+		s = rand()%MAP_SIZE;
 	}	
 	
 	if(r == 1){
-		eagles[no_eagles].x = 9;
+		eagles[no_eagles].x = MAP_SIZE-1;
 		eagles[no_eagles].y = s;
-		putObject(9,s,EAGLE_ID);
+		putObject(MAP_SIZE-1,s,EAGLE_ID);
 				
 	}
 	else{
 		eagles[no_eagles].x = s;
-		eagles[no_eagles].y = 9;
-		putObject(s,9,EAGLE_ID);
+		eagles[no_eagles].y = MAP_SIZE-1;
+		putObject(s,MAP_SIZE-1,EAGLE_ID);
 		
 	}
 	eagles[no_eagles].live = 1;
@@ -129,8 +128,8 @@ void moveTrouper(int i){
 	int v_x = troupers[i].x + (vx(troupers[i].x,0));
 	int v_y = troupers[i].y + (vy(troupers[i].y,0));
 	
-	int check = checkField(v_x,v_y) ;
-	if( check ==1){
+	int check = checkFieldB(v_x,v_y) ;
+	if( check ==1 ){
 		putObject(troupers[i].x,troupers[i].y,0);
 		troupers[i].x = v_x;
 		troupers[i].y = v_y;		
@@ -142,7 +141,6 @@ void moveTrouper(int i){
 		
 			case TOWER_ID:
 				attackOnTower(v_x,v_y,TROUPER_DEMAGE);
-				printf("usao od trupera\n");
 				break;
 			case WALL_ID:
 				attackOnWall(v_x,v_y,TROUPER_DEMAGE);
@@ -158,7 +156,7 @@ void moveEagle(int i){
 	int v_x = eagles[i].x + (vx(eagles[i].x,0));
 	int v_y = eagles[i].y + (vy(eagles[i].y,0));
 	
-	int check = checkField(v_x,v_y);
+	int check = checkFieldB(v_x,v_y);
 	if( check ==1){
 		putObject(eagles[i].x,eagles[i].y,0);
 		putObject(v_x,v_y,EAGLE_ID);
@@ -168,7 +166,6 @@ void moveEagle(int i){
 		switch (check){
 			case TOWER_ID:
 				attackOnTower(v_x,v_y,EAGLE_DEMAGE);
-				printf("usao od egla\n");
 				break;
 			case WALL_ID:
 				attackOnWall(v_x,v_y,EAGLE_DEMAGE);
@@ -239,6 +236,21 @@ void attackEagle(int x,int y,int demage){
 		
 	}
 }
+/*
+int no_invaders(int invaderId){
+
+	switch(invaderId){
+		case EAGLE_ID:
+			return MAX_TOWERS - no_towers;
+		break;
+		case TROUPER_ID:
+			return MAX_WALLS - no_walls;
+		break;
+	
+	}
+	return 0;
+}
 
 
 
+*/

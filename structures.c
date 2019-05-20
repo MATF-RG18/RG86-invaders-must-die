@@ -59,7 +59,7 @@ void initStructures(){
 //F-je za rad sa zidovima
 void structPutWall(int x,int y){
     
-    if(checkField(x,y)!=1)
+    if(checkFieldB(x,y)!=1)
         return;
     if(no_walls == MAX_WALLS)
         return;
@@ -81,7 +81,7 @@ int getWallY(int i){
 
 //F-je sa kulama
 void structPutTower(int x,int y){
-    if(checkField(x,y)!=1)
+    if(checkFieldB(x,y)!=1)
         return;
     if(no_towers == MAX_TOWERS)
         return;
@@ -102,7 +102,7 @@ int getTowerY(int i){
 //F-je za rad sa "cuvarskim postovima"
 void structPutPost(int x,int y){
     
-    if(checkField(x,y)!=1)
+    if(checkFieldB(x,y)!=1)
         return;
     if(no_posts == MAX_POSTS)
         return;
@@ -191,7 +191,7 @@ void checkRange(int struct_id,int x,int y, int demage){
 			
 		for(i=-1;i<2;i++){
 			for(j=-1;j<2;j++){
-				if(checkField(x+i,y+j) == EAGLE_ID){
+				if(checkFieldB(x+i,y+j) == EAGLE_ID){
 					attackEagle(x+i,y+j,demage);
 					return;
 				}			
@@ -201,9 +201,9 @@ void checkRange(int struct_id,int x,int y, int demage){
 	else if(struct_id == POST_ID){
 		for(i=-1;i<2;i++){
 			for(j=-1;j<2;j++){
-				if(checkField(x+i,y+j) == EAGLE_ID){
+				if(checkFieldB(x+i,y+j) == EAGLE_ID){
 					attackEagle(x+i,y+j,demage);
-				}else if(checkField(x+i,y+j) == TROUPER_ID){
+				}else if(checkFieldB(x+i,y+j) == TROUPER_ID){
 					attackTrouper(x+i,y+j,demage);
 				}
 			}

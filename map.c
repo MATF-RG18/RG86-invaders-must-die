@@ -2,6 +2,9 @@
 #include "map.h"
 #include "structures.h"
 
+//#define DEBUG
+
+
 //pocetne koordinate igraca
 int plx = 2;
 int ply = 2;
@@ -22,6 +25,8 @@ void initMapMatrix(void){
 	map_matrix[1][0] = NEXUS_ID;
     map_matrix[1][1] = NEXUS_ID;
     map_matrix[0][1] = NEXUS_ID;
+
+#if defined DEBUG
     for(i=0;i<MAP_SIZE;i++){
      for(j=0;j<MAP_SIZE;j++){
             printf("%d ",map_matrix[i][j]);
@@ -30,7 +35,10 @@ void initMapMatrix(void){
     }
     
     printf("###########################\n");
+#endif
+    
 }
+
 
 
 //dohvatanje igracevih koordinata
@@ -50,9 +58,9 @@ void putObject(int x,int y,int objectType){
 
 //kontrola i pometanje igraca
 void mapMovePlayer(int x,int y){
-    int i,j;
     
-    if(plx+x == MAP_SIZE || ply+y == MAP_SIZE || plx+x < 0 || ply+y <0)
+    
+    if(plx+x == MAP_SIZE-1 || ply+y == MAP_SIZE-1 || plx+x < 0 || ply+y <0)
         return;
     if(map_matrix[plx+x][ply+y] != 0)
         return;
@@ -61,6 +69,8 @@ void mapMovePlayer(int x,int y){
     ply+=y;
     map_matrix[plx][ply] = 1;
     
+#if defined DEBUG
+    int i,j;
     for(i=0;i<MAP_SIZE;i++){
      for(j=0;j<MAP_SIZE;j++){
             printf("%d ",map_matrix[i][j]);
@@ -68,11 +78,23 @@ void mapMovePlayer(int x,int y){
          printf("\n");
     }
     printf("###########################\n");
+
+#endif
+}
+//provera da li je polje prazno ili ne
+int checkFieldB(int i,int j){
+   if(i >= MAP_SIZE-1 || j>= MAP_SIZE-1 || i<0 || j<0){
+       return 0;
+	}
+	else if(map_matrix[i][j] != 0)
+		return map_matrix[i][j];
+	else
+   		return 0==map_matrix[i][j]; 
 }
 
 
-//provera da li je polje prazno ili ne
-int checkField(int i,int j){
+//fja za proveru da li se na nekom od polja nije vec stvorio invaders (u nedostatku boljeg resenja bug-a koji je nastao usled promena)
+int checkFieldI(int i,int j){
    if(i >= MAP_SIZE || j>= MAP_SIZE || i<0 || j<0){
        return 0;
 	}
@@ -81,3 +103,16 @@ int checkField(int i,int j){
 	else
    		return 0==map_matrix[i][j]; 
 }
+
+
+
+//sklanja igraca sa mape
+void prepareForAttack(){
+
+    putObject(getX(),getY(),0);
+    
+    
+}
+
+
+
