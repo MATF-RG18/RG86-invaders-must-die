@@ -34,6 +34,8 @@
 #define TANKTEXTURE1 8
 static GLuint textures[NO_TEXTURES];
 
+static char finalMsg = 0;
+
 //F-ja za iscrtavanje mape
 void drawMap(){
 	//Tekstura MAPE
@@ -114,6 +116,7 @@ void drawMenu(){
 
  
 	char buffer[50];
+	if(finalMsg == 0){
 	sprintf(buffer,"Broj preostalih kula: %d",no_structures(TOWER_ID));
 	print(menu_width/2+50,30,buffer);
 	sprintf(buffer,"Broj preostalih zidova: %d",no_structures(WALL_ID));
@@ -127,6 +130,18 @@ void drawMenu(){
 	print(10,90,"Zakljucavanje kamere - 'c'");
 	print(10,110,"Da pozicionirate kameru na sebe - 'SPACE'");
 	print(10,130,"Za pocetak napada - 'f'");
+}
+	else if (finalMsg == 1){
+		print(200,40,"###########################");
+		print(200,60,"###        WIN          ###");		
+		print(200,80,"###########################");
+	} 
+	else if (finalMsg == -1){
+		print(200,40,"###########################");
+		print(200,60,"###      GAME OVER      ###");		
+		print(200,80,"###########################");
+	} 
+
 	//print(menu_width-250,170,"Napomena: objekat se postavlja");
 	//print(menu_width-250,205,"postavlja u na polje ispred igraca");	
     //print(menu_width-250,240,"igraca. ");
@@ -429,6 +444,21 @@ void drawPlayer(int x,int y,int move){
     
     glPopMatrix();
 }
+
+
+void endGame(char result){
+	if (result == 1){
+			finalMsg = 1;
+			drawMenu();
+	}
+	else if (result == -1){
+		finalMsg = -1;
+		drawMenu();
+	}
+		
+}
+
+
 
 
 //F-ja za ispisivanje teksta 

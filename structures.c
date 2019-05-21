@@ -184,6 +184,39 @@ void attackOnTower(int x,int y,int demage){
 	}
 }
 
+void attackOnNexus(int demage){
+
+	Nexus.healt -= demage;
+
+}
+
+char checkGame(){
+	printf("%d\n",Nexus.healt);
+	if(Nexus.healt<=0){
+		return -1;
+	}
+	else{
+		char has_survivors = 0;
+		int i;
+		for(i=0;i<MAX_TROUPERS;i++){
+			if(tIsAlive(i) != 0){
+				has_survivors = 1;
+				break;
+			}
+		}
+		if(has_survivors == 0){
+			for(i=0;i<MAX_EAGLES;i++){
+				if(eIsAlive(i) != 0){
+					has_survivors = 1;
+					break;
+				}
+			}
+		}
+		printf("chackGame:has_survivors: %d\n",has_survivors);
+		return !has_survivors;
+	}
+}
+
 void checkRange(int struct_id,int x,int y, int demage){
 	
 	int i,j;

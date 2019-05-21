@@ -37,7 +37,8 @@ static int lockCamera = 0;
 static int lastDirection = 0;
 static int animation = 0;
 static short final_attack =0;
-static int time_left = 10;
+static short end = 0;
+static int time_left = 2;
 
 static float final_x = 0;
 static float final_y = 0;
@@ -216,7 +217,7 @@ static void on_display(void)
 
 
     int i;
-	if(animation == 0){
+	if(animation == 1){
 		int i;		
 		for(i=0;i<MAX_EAGLES;i++){
 			riseEagle();
@@ -224,7 +225,8 @@ static void on_display(void)
 		for(i=0;i<MAX_TROUPERS;i++){
 			riseTrouper();	
 		
-		}	
+		}
+		animation = 0;	
 		
 	}	
 
@@ -232,7 +234,7 @@ static void on_display(void)
 
 	for(i=0;i<MAX_TROUPERS;i++){
 		if(tIsAlive(i)){
-		printf("%d : %d %d \n", i,tGetX(i),tGetY(i));
+		//printf("%d : %d %d \n", i,tGetX(i),tGetY(i));
 		drawTrouper(tGetX(i),tGetY(i));	
 		}	
 	}
@@ -240,11 +242,11 @@ static void on_display(void)
     
 	for(i=0;i<MAX_EAGLES;i++){
 		if(eIsAlive(i)){
-		printf("%d : %d %d \n", i,eGetX(i),eGetY(i));
+		//printf("%d : %d %d \n", i,eGetX(i),eGetY(i));
 		drawEagle(eGetX(i),eGetY(i));	
 	}	
 	}
-	animation = 1;
+
 	/*Iscrtavanje mape i njenih objekata*/
 	drawMap();	
     drawNexus();
@@ -340,7 +342,14 @@ static void on_timer(int timer_id){
 	if(timer_id == game_timer){
 		gameLoop();
 		glutPostRedisplay();
-		glutTimerFunc(1000,on_timer,timer_id);
+		
+		end = checkGame();
+		if(end != 0){
+			printf("end:%d\n",end);
+			endGame(end);		
+		}else{
+			glutTimerFunc(1000,on_timer,timer_id);
+		}
 	}else if(timer_id == countdown_timer){
 		time_left -=1;
 		glutPostRedisplay();
@@ -351,7 +360,9 @@ static void on_timer(int timer_id){
                     
                 }
 		else{
-			glutTimerFunc(1000,on_timer,countdown_timer);		
+			animation = 1;
+			glutTimerFunc(1000,on_timer,countdown_timer);	
+				
 		}
 	}
 	return;

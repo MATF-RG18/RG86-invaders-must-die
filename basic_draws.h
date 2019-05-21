@@ -22,3 +22,4 @@ void drawTrouper(int x,int y);
 void drawEagle(int x,int y);
 void trouperAttack(int x1,int y1,int x2,int y2,int id);
 void drawCabbine();
+void endGame(char result);

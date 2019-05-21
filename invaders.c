@@ -148,6 +148,9 @@ void moveTrouper(int i){
 			case POST_ID:
 				attackOnPost(v_x,v_y,TROUPER_DEMAGE);
 				break;
+			case NEXUS_ID:
+				attackOnNexus(TROUPER_DEMAGE);
+				break;
 		}
 	}
 }
@@ -173,6 +176,9 @@ void moveEagle(int i){
 			case POST_ID:
 				attackOnPost(v_x,v_y,EAGLE_DEMAGE);
 				break;
+			case NEXUS_ID:
+				attackOnNexus(TROUPER_DEMAGE);
+				break;
 		}
 	}
 }
@@ -191,12 +197,12 @@ void gameLoop(){
 	for(i=0;i<MAX_TOWERS;i++){
         if(getTowerX(i) == -1)
 	        continue;
-		checkRange(TOWER_ID,getTowerX(i),getTowerY(i),TOWER_DEMAGE);
+	checkRange(TOWER_ID,getTowerX(i),getTowerY(i),TOWER_DEMAGE);
 	}
 	for(i=0;i<MAX_POSTS;i++){
         if(getPostX(i) == -1)
 	        continue;
-		checkRange(POST_ID,getPostX(i),getPostY(i),POST_DEMAGE);
+	checkRange(POST_ID,getPostX(i),getPostY(i),POST_DEMAGE);
 	}
 
 }

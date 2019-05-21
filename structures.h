@@ -64,7 +64,9 @@ int no_structures(int structId);
 void attackOnPost(int x,int y,int demage);
 void attackOnWall(int x,int y,int demage);
 void attackOnTower(int x,int y,int demage);
+void attackOnNexus(int demage);
 
 void checkRange(int struct_id, int x,int y,int demage);
+char checkGame();
 
 
