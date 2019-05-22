@@ -35,7 +35,7 @@ void initStructures(){
     //NEXUS
     Nexus.x = 0;
     Nexus.y = 0;
-    Nexus.healt = 500;
+    Nexus.healt = 200;
     
     //WALLS
     for(j=0;j<MAX_WALLS;j++){

@@ -19,10 +19,8 @@
 int objectX();
 int objectY();
 
-/* Dimenzije prozora */
 
-
-/* Deklaracije callback funkcija. */
+// callback fje - deklaracija
 static void on_keyboard(unsigned char key, int x, int y);
 static void on_reshape(int width, int height);
 static void on_display(void);
@@ -49,22 +47,21 @@ static float final_y = 0;
 
 int main(int argc, char **argv)
 {
-    /* Inicijalizuje se GLUT. */
+    //inicijalizacija
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
 
-    /* Kreira se prozor. */
+    //prozor
     glutInitWindowSize(600, 600);
     glutInitWindowPosition(100, 100);
     glutCreateWindow(argv[0]);
 
-    /* Registruju se callback funkcije. */
+	//callback fje
     glutKeyboardFunc(on_keyboard);
     glutReshapeFunc(on_reshape);
     glutDisplayFunc(on_display);
-    //glutPostRedisplay(on_display);
-
-    /* Obavlja se OpenGL inicijalizacija. */
+ 
+ 	// GL inicijalizacija
     glClearColor(0,1,1, 0);
     glEnable(GL_DEPTH_TEST);
     glLineWidth(2);
@@ -75,8 +72,6 @@ int main(int argc, char **argv)
     initTextures();
 	initInvaders();
 
-    //glutTimerFunc(1000,on_timer,countdown_timer);
-    /* Program ulazi u glavnu petlju. */
     glutMainLoop();
     return 0;
 }
@@ -104,7 +99,7 @@ static void on_keyboard(unsigned char key, int x, int y)
         /* Zavrsava se program. */
         exit(0);
         break;
-
+	//kretanje igraca
 	case 'd':
         mapMovePlayer(-1,0);
         lastDirection = MOVE_RIGHT;
@@ -132,14 +127,17 @@ static void on_keyboard(unsigned char key, int x, int y)
         px = getX() -1;
         on_display();
         break;
+    //postavljanje kule
     case 't':
         structPutTower(objectX(),objectY());
         on_display();
         break;
+    //postavljanej zida
     case 'z':
         structPutWall(objectX(),objectY());
         on_display();
         break;
+    //postavljanje Posta
     case 'p':
             structPutPost(objectX(),objectY());
             on_display();
@@ -158,16 +156,8 @@ static void on_keyboard(unsigned char key, int x, int y)
             initInvaders();
             glutPostRedisplay();
             break;
-    
-    case 'g':
-            break;
             
-    //DEBUG 
-    case 'q':
-		attackOnWall(3,3,1000);
-		glutPostRedisplay();
-		break;	
-	
+	//zapocinjanje napada
     case 'f':
         glutTimerFunc(1000,on_timer,countdown_timer);
         break;
@@ -187,13 +177,11 @@ static void on_reshape(int width, int height)
 
 static void on_display(void)
 {
-    /* Brise se prethodni sadrzaj prozora. */
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    /* Podesava se viewport. */
     glViewport(0, 0, 800, 600);
 
-    /* Podesava se projekcija. */
+    // matrica projekcije
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(
@@ -202,7 +190,7 @@ static void on_display(void)
             0.2, 50);
 
    
-    /* Podesava se tacka pogleda. */
+    // Kamera 
         
 	glMatrixMode(GL_MODELVIEW);
     	glLoadIdentity();
@@ -236,7 +224,6 @@ static void on_display(void)
 
 	for(i=0;i<MAX_TROUPERS;i++){
 		if(tIsAlive(i)){
-		//printf("%d : %d %d \n", i,tGetX(i),tGetY(i));
 		drawTrouper(tGetX(i),tGetY(i));	
 		}	
 	}
@@ -244,7 +231,6 @@ static void on_display(void)
     
 	for(i=0;i<MAX_EAGLES;i++){
 		if(eIsAlive(i)){
-		//printf("%d : %d %d \n", i,eGetX(i),eGetY(i));
 		drawEagle(eGetX(i),eGetY(i));	
 	}	
 	}
@@ -289,17 +275,9 @@ static void on_display(void)
     
 
 
-	//checkRange(TOWER_ID,2,2,100);
-    //drawTrouper(2,2);
-	//drawEagle(3,3);
-	
     drawMenu();
-    //print(window_height-50,window_width-50,"sss");
-    
-	//invaders
 
     
-    /* Nova slika se salje na ekran. */
     glutSwapBuffers();
     
 }
@@ -338,7 +316,7 @@ int objectY(){
 /*timer funkcija 
 	2 timera:
 1. za zavrsni napad
-2. odbrojavanje pred konacni napad*/
+2. odbrojavanje pred konacni napad i podesavanje okruzenja*/
 static void on_timer(int timer_id){
 
 	if(timer_id == game_timer){

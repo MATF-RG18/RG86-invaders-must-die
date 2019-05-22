@@ -25,7 +25,7 @@ Kula:
 		x x x
 
 Nexus:
-	healt = 1000
+	healt = 200
 
 Invaders stats:
 Trouper:
