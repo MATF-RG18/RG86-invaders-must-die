@@ -19,10 +19,10 @@
 #define CANNONCOVERFILE2 "textures/cannon_top.bmp"
 #define POSTCOVERFILE "textures/post.bmp"
 #define POSTCOVERFILE2 "textures/post_top.bmp"
-#define TANKTEXTUREFILE1 "textures/tank.bmp"
-
+#define TROUPERTEXTUREFILE1 "textures/tank.bmp"
+#define EAGLETEXTUREFILE "textures/eagle.bmp"
 //Oznake za konkretne strukture u nizu
-#define NO_TEXTURES 9
+#define NO_TEXTURES 10
 #define MAPTEXTURE 0
 #define NEXUSTEXTURE 1
 #define WALLTEXTURE 2
@@ -31,7 +31,8 @@
 #define CANNONTEXTURE2 5
 #define POSTTEXTURE 6
 #define POSTTEXTURE2 7
-#define TANKTEXTURE1 8
+#define TROUPERTEXTURE1 8
+#define EAGLETEXTURE 9
 static GLuint textures[NO_TEXTURES];
 
 static char finalMsg = 0;
@@ -312,7 +313,7 @@ void cubeWithTexture(int diff_top){
 void drawTrouper(int x,int y){
     
 	
-    glBindTexture(GL_TEXTURE_2D,textures[TANKTEXTURE1]);	
+    glBindTexture(GL_TEXTURE_2D,textures[TROUPERTEXTURE1]);	
     glPushMatrix();
 	glColor3f(0,0,0);
     glTranslatef(x+0.35,0.5,y);
@@ -333,12 +334,15 @@ void drawTrouper(int x,int y){
 //Eagle
 
 void drawEagle(int x,int y){
-	glPushMatrix();
-	glColor3f(1,0,0);
-	glTranslatef(x+0.5,1.5,y+0.5);
-	//glRotatef(45,1,0,0);
-	glutSolidCube(0.5);		
-	glPopMatrix();
+	glBindTexture(GL_TEXTURE_2D,textures[EAGLETEXTURE]);	
+    glPushMatrix();
+	glColor3f(0,0,0);
+    glTranslatef(x+0.5,1.5,y+0.5);
+    cubeWithTexture(0);
+    glPopMatrix();
+    
+    glBindTexture(GL_TEXTURE_2D,0);
+	
 
 }
 
@@ -613,9 +617,9 @@ void initTextures(){
                  GL_RGB, GL_UNSIGNED_BYTE, cover->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    	//Tekstura "Cuvarskog posta"
-	image_read(cover, TANKTEXTUREFILE1);
-    glBindTexture(GL_TEXTURE_2D, textures[TANKTEXTURE1]);
+    	//Tekstura "Troupera"
+	image_read(cover, TROUPERTEXTUREFILE1);
+    glBindTexture(GL_TEXTURE_2D, textures[TROUPERTEXTURE1]);
     glTexParameteri(GL_TEXTURE_2D,
                     GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D,
@@ -629,6 +633,21 @@ void initTextures(){
                  GL_RGB, GL_UNSIGNED_BYTE, cover->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     
+    //Tekstura "Eagle"
+	image_read(cover, EAGLETEXTUREFILE);
+    glBindTexture(GL_TEXTURE_2D, textures[EAGLETEXTURE]);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+                 cover->width, cover->height, 0,
+                 GL_RGB, GL_UNSIGNED_BYTE, cover->pixels);
+    glBindTexture(GL_TEXTURE_2D, 0);
     
 	
 

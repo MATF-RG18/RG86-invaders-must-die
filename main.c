@@ -104,11 +104,7 @@ static void on_keyboard(unsigned char key, int x, int y)
         /* Zavrsava se program. */
         exit(0);
         break;
-/*	
-	case '4':
-		break;
-	// w s a d - pomeranje po mapi
-  */
+
 	case 'd':
         mapMovePlayer(-1,0);
         lastDirection = MOVE_RIGHT;
@@ -363,6 +359,7 @@ static void on_timer(int timer_id){
 			glutTimerFunc(1000,on_timer,game_timer);
                         final_attack = 1;
                         prepareForAttack();
+                        lockCamera = 0;
 						px = -1;
 						pz = -4;
                     
