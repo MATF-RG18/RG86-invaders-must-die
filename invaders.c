@@ -34,13 +34,13 @@ void initInvaders(){
 		troupers[i].x = -1;
 		troupers[i].y = -1;
 
-		troupers[i].healt = 100;
+		troupers[i].healt = 1000;
 	}
 	for(i=0;i<MAX_EAGLES;i++){
 		eagles[i].live = 0;
 		eagles[i].x = -1;
 		eagles[i].y = -1;
-		eagles[i].healt = 100;
+		eagles[i].healt = 1000;
 	}
 }
 
@@ -121,6 +121,7 @@ int eIsAlive(int i){
 	return eagles[i].live;
 }
 
+//F-je pomeranja Troupera i Eagle
 
 void moveTrouper(int i){
 
@@ -242,21 +243,4 @@ void attackEagle(int x,int y,int demage){
 		
 	}
 }
-/*
-int no_invaders(int invaderId){
 
-	switch(invaderId){
-		case EAGLE_ID:
-			return MAX_TOWERS - no_towers;
-		break;
-		case TROUPER_ID:
-			return MAX_WALLS - no_walls;
-		break;
-	
-	}
-	return 0;
-}
-
-
-
-*/

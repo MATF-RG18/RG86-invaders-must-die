@@ -61,6 +61,8 @@ void drawMap(){
     
 	//Mreza polja
 	int i;
+	#if defined DEBUG
+	
     glColor3f(0,0,0);
     for(i=0;i<=MAP_SIZE-1;i++){
         glBegin(GL_LINES);
@@ -72,7 +74,7 @@ void drawMap(){
             glVertex3f(MAP_SIZE-1,0,i);
         glEnd();
     }
-    
+    #endif
     //iscrtavanje zemlje po obodu ostrva
     glColor3f(0.4,0.1,0);
     for(i=0;i<MAP_SIZE-1;i++){
@@ -341,18 +343,6 @@ void drawEagle(int x,int y){
 }
 
 
-void drawCabbine(){
-
-	glPushMatrix();
-	glTranslatef(0.5,3,0.5);
-	glutWireCube(1);
-	glPopMatrix();
-
-
-}
-
-
-
 
 
 //F-ja za iscrtavanje igraca
@@ -433,6 +423,7 @@ void drawPlayer(int x,int y,int move){
 }
 
 
+//endgame Menu
 void endGame(char result){
 	if (result == 1){
 			finalMsg = 1;

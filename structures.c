@@ -29,7 +29,7 @@ void initStructures(){
         towers[j].x = -1;
         towers[j].y = -1;
         towers[j].healt = 100;
-        towers[j].demage = 1000;
+        towers[j].demage = 500;
     }
     
     //NEXUS
@@ -41,15 +41,15 @@ void initStructures(){
     for(j=0;j<MAX_WALLS;j++){
         walls[j].x = -1;
         walls[j].y = -1;
-        walls[j].healt = 150;
+        walls[j].healt = 200;
     }
 
     //POSTS
     for(j=0;j<MAX_POSTS;j++){
         posts[j].x = -1;
         posts[j].y = -1;
-        posts[j].healt = 150;
-	posts[j].demage = 200;
+        posts[j].healt = 100;
+	posts[j].demage = 500;
     }
 
 
@@ -190,6 +190,8 @@ void attackOnNexus(int demage){
 
 }
 
+
+//F-je za pracenje stanja igre
 char checkGame(){
 
 	if(Nexus.healt<=0){
