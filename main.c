@@ -6,13 +6,14 @@
 #include "basic_draws.h"
 #include "image.h"
 #include "invaders.h"
-
+#include <math.h>
 #define UNUSED(x) ((void)x)
 
 //timeri
 #define game_timer 0
 #define countdown_timer 1
 
+#define PI 3.14159265
 
 //F-je pomocne
 int objectX();
@@ -30,7 +31,7 @@ static void on_timer(int timer_id);
 static float px = 5;
 static float py = 5;
 static float pz = 0;
-static float rot = 5;
+static float rot = MAP_SIZE /2;
 
 //pomocni parametri
 static int lockCamera = 0;
@@ -39,6 +40,7 @@ static int animation = 0;
 static short final_attack =0;
 static short end = 0;
 static int time_left = 2;
+
 
 static float final_x = 0;
 static float final_y = 0;
@@ -102,8 +104,12 @@ static void on_keyboard(unsigned char key, int x, int y)
         /* Zavrsava se program. */
         exit(0);
         break;
+/*	
+	case '4':
+		break;
 	// w s a d - pomeranje po mapi
-    case 'd':
+  */
+	case 'd':
         mapMovePlayer(-1,0);
         lastDirection = MOVE_RIGHT;
         on_display();
@@ -207,7 +213,7 @@ static void on_display(void)
         if (lockCamera == 1){
             pz = getY()-4;
             rot = getX();
-            px = getX() -1;
+            px = getX() -1 ;
         }
     	gluLookAt(
             px,py,pz,
@@ -357,6 +363,8 @@ static void on_timer(int timer_id){
 			glutTimerFunc(1000,on_timer,game_timer);
                         final_attack = 1;
                         prepareForAttack();
+						px = -1;
+						pz = -4;
                     
                 }
 		else{

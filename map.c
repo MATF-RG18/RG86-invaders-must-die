@@ -49,7 +49,7 @@ int getY(){
     return ply;
 }
 
-//postavljanje onjekta na mapu, svaki objekat je jedinstveno odredjen svojim ID-om
+//postavljanje objekta na mapu, svaki objekat je jedinstveno odredjen svojim ID-om
 void putObject(int x,int y,int objectType){
     map_matrix[x][y] = objectType;
     

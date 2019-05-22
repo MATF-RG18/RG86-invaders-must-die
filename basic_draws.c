@@ -109,10 +109,10 @@ void drawMenu(){
     glLoadIdentity();
     glClear(GL_DEPTH_BUFFER_BIT);
     
-    //crtanje 2D menija
+    //crtanje 2D menija i ispisivanje sadrzaja
     
     float menu_width = width;
-    float menu_height = height/4.0;
+    float menu_height = height/4.0 ;
 
  
 	char buffer[50];
@@ -130,6 +130,7 @@ void drawMenu(){
 	print(10,90,"Zakljucavanje kamere - 'c'");
 	print(10,110,"Da pozicionirate kameru na sebe - 'SPACE'");
 	print(10,130,"Za pocetak napada - 'f'");
+	print(10,150,"Za reset mape - 'r'");
 }
 	else if (finalMsg == 1){
 		print(200,40,"###########################");
@@ -142,27 +143,13 @@ void drawMenu(){
 		print(200,80,"###########################");
 	} 
 
-	//print(menu_width-250,170,"Napomena: objekat se postavlja");
-	//print(menu_width-250,205,"postavlja u na polje ispred igraca");	
-    //print(menu_width-250,240,"igraca. ");
-    /*glBegin(GL_LINES);
-    	glLineWidth(4);
-        glColor3f(0,0,0);
-		glVertex2f(menu_width/2,0);
-		glVertex2f(menu_width/2,menu_height);
-    glEnd();
-    */
     glBegin(GL_QUADS);
         glColor3f(0.8,0.7,0.1);
         glVertex2f(0.0, 0.0);
         glVertex2f(width, 0.0);
-        glVertex2f(width, menu_height);
-        glVertex2f(0.0, height/4.0);
+        glVertex2f(width, menu_height+30);
+        glVertex2f(0.0, menu_height + 30);
     glEnd();
-    
-    
-    
-
     
     //Vracanje prethodnih matrica
     glMatrixMode(GL_PROJECTION);

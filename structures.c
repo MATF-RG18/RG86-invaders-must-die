@@ -191,7 +191,7 @@ void attackOnNexus(int demage){
 }
 
 char checkGame(){
-	printf("%d\n",Nexus.healt);
+
 	if(Nexus.healt<=0){
 		return -1;
 	}
@@ -212,7 +212,7 @@ char checkGame(){
 				}
 			}
 		}
-		printf("chackGame:has_survivors: %d\n",has_survivors);
+
 		return !has_survivors;
 	}
 }
@@ -234,9 +234,9 @@ void checkRange(int struct_id,int x,int y, int demage){
 	else if(struct_id == POST_ID){
 		for(i=-1;i<2;i++){
 			for(j=-1;j<2;j++){
-				if(checkFieldB(x+i,y+j) == EAGLE_ID){
-					attackEagle(x+i,y+j,demage);
-				}else if(checkFieldB(x+i,y+j) == TROUPER_ID){
+				/*if(checkFieldB(x+i,y+j) == EAGLE_ID){
+					attackEagle(x+i,y+j,demage);*/
+				if(checkFieldB(x+i,y+j) == TROUPER_ID){
 					attackTrouper(x+i,y+j,demage);
 				}
 			}
