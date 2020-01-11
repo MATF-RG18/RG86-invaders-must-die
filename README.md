@@ -5,11 +5,11 @@ Igrica "Invaders must die" je tipa tower-defense igara. Na pocetku su vam na ras
 
 Structure stats:
 Zid:
-	demage = 0
+	damage = 0
 	healt = 200
 
 Post:
-	demage=500
+	damage=500
 	healt = 100
 	range:
 		x x x
@@ -17,7 +17,7 @@ Post:
 		x x x
 
 Kula:
-	demage = 500
+	damage = 500
 	healt = 100
 	range:
 		x x x
@@ -29,12 +29,12 @@ Nexus:
 
 Invaders stats:
 Trouper:
-	demage = 60
+	damage = 60
 	healt = 1000
 	
 
 Eagle:
-	demage = 60
+	damage = 60
 	healt = 1000
 	
 x- polje napada
